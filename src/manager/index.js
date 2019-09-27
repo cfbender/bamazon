@@ -66,6 +66,11 @@ const addInv = async connection => {
   });
 };
 
+/**
+ *
+ *
+ * @param {Object} connection A connection to a to MySQL database
+ */
 const addNew = async connection => {
   console.log(
     "\n\nFill out the below details for the product you would like to add:\n"
