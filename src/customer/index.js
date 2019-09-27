@@ -12,6 +12,12 @@ module.exports = () => {
     database: "bamazon"
   });
 
+  /**
+   *
+   * Handles prompt for user input to select item ID
+   * @param {array} itemIDs
+   * @returns {string} id
+   */
   const itemSelect = async itemIDs => {
     //get ID of item to purchase
     let { id } = await inquirer.prompt([
@@ -33,6 +39,11 @@ module.exports = () => {
     }
   };
 
+  /**
+   *
+   * Handles quantity and purchase prompts
+   * @param {string} id
+   */
   const main = async id => {
     //get quantity to purchase
     let { quantity } = await inquirer.prompt([
