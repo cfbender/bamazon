@@ -15,7 +15,7 @@ department_id INT,
     price DOUBLE
 (10,2),
     stock_quantity INT,
-    product_sales INT,
+    product_sales DOUBLE(100,2),
     primary key
 (item_id)
 );
