@@ -50,6 +50,11 @@ const viewSales = connection => {
   });
 };
 
+/**
+ *
+ * Gets user input for new department, and creates it on the database
+ * @param {object} connection A connection to a MySQL Database
+ */
 const createDep = async connection => {
   const newDep = await inquirer.prompt([
     {
@@ -75,6 +80,7 @@ const createDep = async connection => {
     connection.end();
   });
 };
+
 /**
  *
  *
