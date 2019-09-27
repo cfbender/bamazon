@@ -20,7 +20,7 @@ const padString = (str, endLength) => {
  *
  * Displays all items in database formatted with id, name, price and quantity
  * @param {object} connection
- * @param {function} resFilter Callback function to use for Array.filter
+ * @param {function=} resFilter Function to use for Array.filter
  * @returns {Promise<string[]>} Promise object contains an array with all item IDs
  */
 const stock = async (connection, resFilter) => {
