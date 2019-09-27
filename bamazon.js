@@ -1,21 +1,30 @@
 const customer = require("./src/customer");
 const manager = require("./src/manager");
 const supervisor = require("./src/supervisor");
+const mysql = require("mysql");
 
 const [, , arg] = process.argv;
+
+const connection = mysql.createConnection({
+  host: "localhost",
+  port: 3306,
+  user: "root",
+  password: "root",
+  database: "bamazon"
+});
 
 switch (arg) {
   case "-customer":
   case "-c":
-    customer();
+    customer(connection);
     break;
   case "-manager":
   case "-m":
-    manager();
+    manager(connection);
     break;
   case "-supervisor":
   case "-s":
-    supervisor();
+    supervisor(connection);
     break;
   case "-help":
   case "-h":

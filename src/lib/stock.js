@@ -2,6 +2,13 @@ const chalk = require("chalk");
 
 //function to center text in the table
 
+/**
+ *
+ *
+ * @param {string} str Any text to center pad to given length
+ * @param {number} endLength The full length of the padded string
+ * @returns {string} centered string with roughly even whitespace on each end of length endLength
+ */
 const padString = (str, endLength) => {
   let padStr = str.toString();
   let left = Math.floor((endLength - padStr.length) / 2) + padStr.length;
@@ -13,9 +20,10 @@ const padString = (str, endLength) => {
  *
  * Displays all items in database formatted with id, name, price and quantity
  * @param {object} connection
- * @returns {Promise} Promise object contains an array with all item IDs
+ * @param {function} resFilter Callback function to use for Array.filter
+ * @returns {Promise<string[]>} Promise object contains an array with all item IDs
  */
-const stock = async connection => {
+const stock = async (connection, resFilter) => {
   return new Promise(resolve => {
     //print out header with color
     console.log(
@@ -43,12 +51,17 @@ const stock = async connection => {
         "   -------------------------------------------------------------------------------------"
       )
     );
+
     const query =
       "SELECT item_id, product_name, price, stock_quantity FROM products";
 
     connection.query(query, (err, res) => {
       let itemIDs = [];
       if (err) throw err;
+      if (resFilter) {
+        res = res.filter(resFilter);
+      }
+
       //logs each item out with correct length padding
       res.forEach(item => {
         itemIDs.push(item.item_id);

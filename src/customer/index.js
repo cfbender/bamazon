@@ -1,44 +1,8 @@
 const inquirer = require("inquirer");
-const mysql = require("mysql");
-const stock = require("../stock");
+const stock = require("../lib/stock");
+const itemSelect = require("../lib/itemSelect");
 
-module.exports = () => {
-  //configure the connection
-  const connection = mysql.createConnection({
-    host: "localhost",
-    port: 3306,
-    user: "root",
-    password: "root",
-    database: "bamazon"
-  });
-
-  /**
-   *
-   * Handles prompt for user input to select item ID
-   * @param {array} itemIDs
-   * @returns {string} id
-   */
-  const itemSelect = async itemIDs => {
-    //get ID of item to purchase
-    let { id } = await inquirer.prompt([
-      {
-        type: "input",
-        name: "id",
-        message: "Input the Item ID of the item you would like to purchase: "
-      }
-    ]);
-    //inquirer returns strings only
-    id = parseInt(id);
-
-    if (!itemIDs.includes(id)) {
-      console.log("\nThat item ID does not exist! Please try another.\n");
-      let id = await itemSelect();
-      return id;
-    } else {
-      return id;
-    }
-  };
-
+module.exports = connection => {
   /**
    *
    * Handles quantity and purchase prompts
