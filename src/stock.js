@@ -1,10 +1,3 @@
-/*
-function displays all items in database formatted with id, name, price and quantity
-
-@param: connection - an active, valid MySQL connection using mysql.createConnection();
-returns: an array of all item IDs on a promise
-*/
-
 const chalk = require("chalk");
 
 //function to center text in the table
@@ -16,6 +9,12 @@ const padString = (str, endLength) => {
   return padStr.padStart(left + 1, " ").padEnd(right, " ");
 };
 
+/**
+ *
+ * Displays all items in database formatted with id, name, price and quantity
+ * @param {object} connection
+ * @returns {Promise} Promise object contains an array with all item IDs
+ */
 const stock = async connection => {
   return new Promise(resolve => {
     //print out header with color
