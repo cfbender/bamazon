@@ -1,21 +1,5 @@
 const chalk = require("chalk");
-
-//function to center text in the table
-
-/**
- *
- *
- * @param {string} str Any text to center pad to given length
- * @param {number} endLength The full length of the padded string
- * @returns {string} centered string with roughly even whitespace on each end of length endLength
- */
-const padString = (str, endLength) => {
-  let padStr = str.toString();
-  let left = Math.floor((endLength - padStr.length) / 2) + padStr.length;
-  let right = Math.floor((endLength - padStr.length) / 2) + left;
-  return padStr.padStart(left + 1, " ").padEnd(right, " ");
-};
-
+const padString = require("./padString");
 /**
  *
  * Displays all items in database formatted with id, name, price and quantity
@@ -27,6 +11,7 @@ const stock = async (connection, resFilter) => {
   return new Promise(resolve => {
     //print out header with color
     console.log(
+      "\n",
       chalk.green(
         "   _____________________________________________________________________________________"
       )
