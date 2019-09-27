@@ -58,6 +58,7 @@ const stock = async (connection, resFilter) => {
     connection.query(query, (err, res) => {
       let itemIDs = [];
       if (err) throw err;
+
       if (resFilter) {
         res = res.filter(resFilter);
       }

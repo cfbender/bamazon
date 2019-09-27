@@ -38,6 +38,11 @@ const lowInv = async connection => {
   connection.end();
 };
 
+/**
+ *
+ * Prompts the user for an item ID and allows them to set the new stock_quantity
+ * @param {*} connection Connection to MySQL Database
+ */
 const addInv = async connection => {
   let itemIDs = await stock(connection);
   const id = await itemSelect(itemIDs);
@@ -58,6 +63,49 @@ const addInv = async connection => {
       connection.end();
     }
   );
+};
+
+const addNew = async connection => {
+  console.log(
+    "\n\nFill out the below details for the product you would like to add:\n"
+  );
+  let newItem = await inquirer.prompt([
+    {
+      type: "input",
+      message: "Product Name: ",
+      name: "product_name"
+    },
+    {
+      type: "input",
+      message: "Department name: ",
+      name: "department_name"
+    },
+    {
+      type: "input",
+      message: "Department ID: ",
+      name: "department_id"
+    },
+    {
+      type: "input",
+      message: "Price ($USD): ",
+      name: "price"
+    },
+    {
+      type: "input",
+      message: "Intial quantity: ",
+      name: "stock_quantity"
+    }
+  ]);
+
+  const query = "INSERT INTO products SET ?";
+
+  connection.query(query, newItem, err => {
+    if (err) throw err;
+    console.log(
+      `Success! Bamazon now has ${newItem.stock_quantity} of ${newItem.product_name} available for sale.`
+    );
+    connection.end();
+  });
 };
 
 /**
@@ -83,7 +131,6 @@ module.exports = async connection => {
       break;
     case "Add New Product":
       addNew(connection);
-      connection.end();
       break;
   }
 };
