@@ -19,7 +19,7 @@ module.exports = () => {
     database: "bamazon"
   });
 
-  const products = {};
+  const itemIDs = [];
 
   const stock = async () => {
     return new Promise(async resolve => {
@@ -55,11 +55,7 @@ module.exports = () => {
         if (err) throw err;
         //logs each item out with correct length padding
         res.forEach(item => {
-          products[item.item_id] = {
-            name: item.product_name,
-            price: item.price,
-            stock: item.stock_quantity
-          };
+          itemIDs.push(item.item_id);
           console.log(
             `   |${padString(item.item_id, 9)}|${padString(
               item.product_name,
@@ -89,7 +85,7 @@ module.exports = () => {
 
     id = parseInt(id);
 
-    if (!products.hasOwnProperty(id)) {
+    if (!itemIDs.includes(id)) {
       console.log("\nThat item ID does not exist! Please try another.\n");
       let id = await itemSelect();
       return id;
