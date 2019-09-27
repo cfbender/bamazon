@@ -4,7 +4,7 @@ const inquirer = require("inquirer");
  *
  * Handles prompt for user input to select item ID
  * @param {array} itemIDs an array of all valid item IDs
- * @returns {number} id
+ * @returns {Promise<number>} Promise fulfilled by id
  */
 
 const itemSelect = async itemIDs => {
@@ -13,7 +13,7 @@ const itemSelect = async itemIDs => {
     {
       type: "input",
       name: "id",
-      message: "Input the Item ID of the item you would like to purchase: "
+      message: "Input the Item ID of the item: "
     }
   ]);
   //inquirer returns strings only

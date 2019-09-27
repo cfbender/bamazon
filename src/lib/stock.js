@@ -19,7 +19,7 @@ const padString = (str, endLength) => {
 /**
  *
  * Displays all items in database formatted with id, name, price and quantity
- * @param {object} connection
+ * @param {object} connection Connection to mySQL database
  * @param {function=} resFilter Function to use for Array.filter
  * @returns {Promise<string[]>} Promise object contains an array with all item IDs
  */
@@ -69,7 +69,10 @@ const stock = async (connection, resFilter) => {
           `   |${padString(item.item_id, 9)}|${padString(
             item.product_name,
             51
-          )}|${padString(item.price, 11)}|${padString(item.stock_quantity, 9)}|`
+          )}|${padString("$ " + item.price, 11)}|${padString(
+            item.stock_quantity,
+            9
+          )}|`
         );
         console.log(
           "   -------------------------------------------------------------------------------------"
