@@ -53,16 +53,17 @@ const addInv = async connection => {
       name: "quantity"
     }
   ]);
-  const query = "UPDATE products SET ? WHERE ?";
-  connection.query(
-    query,
-    [{ stock_quantity: quantity }, { item_id: id }],
-    err => {
-      if (err) throw err;
-      console.log(`Success! Item ID ${id} now has ${quantity} in stock.`);
-      connection.end();
-    }
-  );
+
+  const query = [
+    "UPDATE products SET ? WHERE ?",
+    [{ stock_quantity: quantity }, { item_id: id }]
+  ];
+
+  connection.query(...query, err => {
+    if (err) throw err;
+    console.log(`Success! Item ID ${id} now has ${quantity} in stock.`);
+    connection.end();
+  });
 };
 
 const addNew = async connection => {
@@ -97,9 +98,9 @@ const addNew = async connection => {
     }
   ]);
 
-  const query = "INSERT INTO products SET ?";
+  const query = ["INSERT INTO products SET ?", newItem];
 
-  connection.query(query, newItem, err => {
+  connection.query(...query, err => {
     if (err) throw err;
     console.log(
       `Success! Bamazon now has ${newItem.stock_quantity} of ${newItem.product_name} available for sale.`

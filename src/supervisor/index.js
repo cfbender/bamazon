@@ -9,7 +9,7 @@ const padString = require("../lib/padString");
  */
 const viewSales = connection => {
   let query =
-    "SELECT departments.department_id, departments.department_name, AVG(departments.over_head_costs) over_head_costs, SUM(products.product_sales) product_sales, SUM(over_head_costs - product_sales) total_profit ";
+    "SELECT departments.department_id, departments.department_name, AVG(departments.over_head_costs) over_head_costs, SUM(products.product_sales) product_sales, SUM(product_sales - over_head_costs ) total_profit ";
   query +=
     "FROM departments LEFT JOIN products ON (products.department_id = departments.department_id) ";
   query += "GROUP BY departments.department_name, departments.department_id;";
@@ -43,13 +43,38 @@ const viewSales = connection => {
         )}|${padString(item.total_profit, 18)}|`
       );
       console.log(
-        "   -------------------------------------------------------------------------------------"
+        "   -----------------------------------------------------------------------------------------------------------"
       );
     });
     connection.end();
   });
 };
 
+const createDep = async connection => {
+  const newDep = await inquirer.prompt([
+    {
+      type: "input",
+      message: "Name of the new department: ",
+      name: "department_name"
+    },
+    {
+      type: "input",
+      message: "Overhead costs of the new department: ",
+      name: "over_head_costs"
+    }
+  ]);
+
+  const query = ["INSERT INTO departments SET ?", newDep];
+
+  connection.query(...query, err => {
+    if (err) throw err;
+
+    console.log(
+      `Success! ${newDep.department_name} added as new department with overhead costs of ${newDep.over_head_costs}`
+    );
+    connection.end();
+  });
+};
 /**
  *
  *

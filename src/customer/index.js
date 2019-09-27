@@ -18,10 +18,12 @@ module.exports = connection => {
       }
     ]);
 
-    const query =
-      "SELECT stock_quantity, price, product_sales FROM products WHERE ?";
+    const query = [
+      "SELECT stock_quantity, price, product_sales FROM products WHERE ?",
+      { item_id: id }
+    ];
     //query for quanity of selected item
-    connection.query(query, { item_id: id }, (err, res) => {
+    connection.query(...query, (err, res) => {
       if (err) throw err;
       //if stock is enough to cover quanity
       if (res[0].stock_quantity >= quantity) {
@@ -31,22 +33,22 @@ module.exports = connection => {
         let newSales = res[0].product_sales + revenue;
 
         //create query
-        let query = "UPDATE products SET ?, ? WHERE ?";
-        connection.query(
-          query,
+        let query = [
+          "UPDATE products SET ?, ? WHERE ?",
           [
             { stock_quantity: parseInt(newQuantity) },
             { product_sales: parseFloat(newSales) },
             { item_id: parseInt(id) }
-          ],
-          err => {
-            if (err) throw err;
-            console.log(
-              "\nSuccess! Your items will arrive soon. Have a great day and thank you for shopping with Bamazon.\n"
-            );
-            connection.end();
-          }
-        );
+          ]
+        ];
+
+        connection.query(...query, err => {
+          if (err) throw err;
+          console.log(
+            "\nSuccess! Your items will arrive soon. Have a great day and thank you for shopping with Bamazon.\n"
+          );
+          connection.end();
+        });
       } else {
         console.log("Insufficient quantity! Please try again. ");
         main(id);
